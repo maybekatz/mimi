@@ -222,14 +222,15 @@ impl Default for Preferences {
     fn default() -> Self {
         Self {
             source_language: SourceLanguage::Automatic,
-            target_language: TargetLanguage::SimplifiedChinese,
+            // Voice V1: pure transcription, no translation.
+            target_language: TargetLanguage::Original,
             translation_mode: TranslationMode::Turbo,
             font_size: DEFAULT_FONT_SIZE,
             subtitle_background_opacity: 80,
             subtitle_color: SubtitleColor::White,
             microphone_subtitle_color: SubtitleColor::Yellow,
             subtitle_alignment: SubtitleAlignment::Center,
-            subtitle_display_mode: SubtitleDisplayMode::Translation,
+            subtitle_display_mode: SubtitleDisplayMode::Original,
             show_subtitle_dividers: false,
             keep_subtitle_text_opaque: false,
             pulse_animation: None,
@@ -242,7 +243,8 @@ impl Default for Preferences {
             ui_language: None,
             retain_session_history: false,
             record_session_audio: false,
-            audio_input: AudioInput::System,
+            // Voice V1: microphone-only transcription by default.
+            audio_input: AudioInput::Microphone,
             windows_audio_source: String::new(),
             system_audio_target: Default::default(),
             show_in_dock: true,

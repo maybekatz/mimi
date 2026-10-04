@@ -25,16 +25,20 @@ const TrayPanel = lazy(() =>
     default: module.TrayPanel,
   })),
 );
+const TranscribeWindow = lazy(() =>
+  import("./windows/transcribe/TranscribeWindow").then((module) => ({
+    default: module.TranscribeWindow,
+  })),
+);
 
-type WindowLabel = "overlay" | "overlay-control" | "tray-panel" | "settings";
+type WindowLabel = "overlay" | "overlay-control" | "tray-panel" | "settings" | "transcribe";
 
 /**
  * Every window loads the shared entry, then lazily loads only the component
- * matching its label: "overlay" (floating subtitles), "tray-panel" (menu-bar
- * style control panel), "settings" (main settings window), or
- * "overlay-control" (the child status island and control panel). Outside
- * Tauri a `?window=` query parameter selects the preview (defaults to
- * "settings").
+ * matching its label. Voice V1 adds `transcribe` (single-window
+ * microphone transcription) alongside the original mimi windows.
+ * Outside Tauri a `?window=` query parameter selects the preview
+ * (defaults to "transcribe" for Voice V1).
  */
 export default function App() {
   const uiLanguage = useSyncExternalStore(subscribeUiLanguage, effectiveUiLanguage);
@@ -57,6 +61,7 @@ export default function App() {
   if (label === "overlay") windowContent = <OverlayWindow />;
   else if (label === "overlay-control") windowContent = <OverlayControlWindow />;
   else if (label === "tray-panel") windowContent = <TrayPanel />;
+  else if (label === "transcribe") windowContent = <TranscribeWindow />;
   else windowContent = <SettingsView />;
 
   return (
@@ -79,7 +84,7 @@ function FrontendReadySignal({ label }: { label: WindowLabel }) {
       reported.current ||
       desktopShortcuts === undefined ||
       status !== "listening" ||
-      (label !== "settings" && label !== "overlay")
+      (label !== "settings" && label !== "overlay" && label !== "transcribe")
     ) {
       return;
     }
@@ -126,7 +131,8 @@ function resolveInitialLabel(): WindowLabel {
   return param === "overlay" ||
     param === "overlay-control" ||
     param === "tray-panel" ||
-    param === "settings"
+    param === "settings" ||
+    param === "transcribe"
     ? param
-    : "settings";
+    : "transcribe";
 }

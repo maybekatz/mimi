@@ -1,6 +1,6 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "mimi",
+  "productName": "Voice",
   "version": "1.5.9",
   "identifier": "app.yuxino.mimi",
   "build": {
@@ -12,13 +12,24 @@
   "app": {
     "windows": [
       {
+        "label": "transcribe",
+        "title": "Voice — 语音转文字",
+        "width": 860,
+        "height": 680,
+        "resizable": true,
+        "center": true,
+        "visible": true,
+        "minWidth": 560,
+        "minHeight": 480
+      },
+      {
         "label": "settings",
-        "title": "mimi",
+        "title": "设置 — Voice",
         "width": 760,
         "height": 720,
         "resizable": true,
         "center": true,
-        "visible": true,
+        "visible": false,
         "minWidth": 520,
         "minHeight": 560
       }
@@ -37,8 +48,8 @@
     "resources": {
       "../THIRD_PARTY_NOTICES.md": "THIRD_PARTY_NOTICES.md"
     },
-    "shortDescription": "Live translated subtitles for anything playing on your device.",
-    "longDescription": "Turn Chinese, Japanese, English, or Korean audio playing on your device into live subtitles, with optional translation into Simplified Chinese, English, or Japanese.",
+    "shortDescription": "Voice — 麦克风 / 系统音频实时转文字 + 文件导入转写",
+    "longDescription": "Voice 支持麦克风实时转写、视频/会议系统声音转写、录音文件导入转写。快捷键启停、实时草稿、编辑/一键复制/导出 TXT。Powered by DashScope sk-.",
     "icon": [
       "icons/32x32.png",
       "icons/128x128.png",

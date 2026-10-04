@@ -1028,11 +1028,12 @@ fn setup_global_shortcuts(
     }
 
     // macOS: Cmd+Shift (SUPER is the Command key); Windows: Ctrl+Shift.
+    // Voice V1: per spec, use Cmd/Ctrl+Shift+S for start/stop recording.
     #[cfg(target_os = "macos")]
     let modifiers = Modifiers::SUPER | Modifiers::SHIFT;
     #[cfg(not(target_os = "macos"))]
     let modifiers = Modifiers::CONTROL | Modifiers::SHIFT;
-    let session_shortcut = Shortcut::new(Some(modifiers), Code::Space);
+    let session_shortcut = Shortcut::new(Some(modifiers), Code::KeyS);
     let immersive_shortcut = Shortcut::new(Some(modifiers), Code::KeyM);
     let display_shortcut = Shortcut::new(Some(modifiers), Code::KeyB);
 
