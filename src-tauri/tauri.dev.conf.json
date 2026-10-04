@@ -6,7 +6,7 @@
     "windows": [
       {
         "label": "transcribe",
-        "title": "mimi voice — 语音转文字",
+        "title": "mimi voice — 语音转文字 (dev)",
         "width": 780,
         "height": 640,
         "resizable": true,
@@ -17,7 +17,7 @@
       },
       {
         "label": "settings",
-        "title": "设置 — mimi voice",
+        "title": "设置 — mimi voice (dev)",
         "width": 760,
         "height": 720,
         "resizable": true,

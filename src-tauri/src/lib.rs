@@ -165,16 +165,30 @@ pub fn run() {
             });
             app.manage(windows::OverlayControlState::default());
             app.manage(windows::OverlayPresentationState::default());
-            windows::OverlayWindowManager::ensure_overlay(&app_handle, &overlay);
-            #[cfg(target_os = "macos")]
-            windows::install_active_space_observer(&app_handle, &overlay, &settings);
-            let preferences = settings.preferences();
-            windows::OverlayWindowManager::update_locked(
-                &app_handle,
-                preferences.overlay_locked || preferences.subtitle_blends_with_background,
-            );
-            windows::TrayPanelManager::ensure(&app_handle);
-            windows::OverlayControlWindowManager::ensure(&app_handle);
+            // Voice V1: primary window is `transcribe`. Overlay/tray/control
+            // are legacy mimi windows; skip them in voice mode to avoid
+            // spawning 4 windows on dev launch. Keep tray/menu for global
+            // shortcut power users, but do not auto-create overlay windows.
+            let voice_mode = app.config().build.dev_url.is_some()
+                || app.get_webview_window("transcribe").is_some();
+            if !voice_mode {
+                windows::OverlayWindowManager::ensure_overlay(&app_handle, &overlay);
+                #[cfg(target_os = "macos")]
+                windows::install_active_space_observer(&app_handle, &overlay, &settings);
+                let preferences = settings.preferences();
+                windows::OverlayWindowManager::update_locked(
+                    &app_handle,
+                    preferences.overlay_locked || preferences.subtitle_blends_with_background,
+                );
+                windows::TrayPanelManager::ensure(&app_handle);
+                windows::OverlayControlWindowManager::ensure(&app_handle);
+            } else {
+                // Ensure transcribe is visible even if it was stale from cache.
+                if let Some(w) = app.get_webview_window("transcribe") {
+                    let _ = w.show();
+                    let _ = w.set_focus();
+                }
+            }
             #[cfg(target_os = "windows")]
             app.manage(windows::install_windows_workspace_follower(&app_handle));
 
