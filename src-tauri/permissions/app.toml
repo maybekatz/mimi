@@ -102,7 +102,7 @@ commands.allow = [
 
 [[permission]]
 identifier = "app-transcribe"
-description = "Voice V1 single-window transcription: start/stop microphone, live text, copy and export."
+description = "Voice single-window: microphone, system audio, and file import transcription with copy/export."
 commands.allow = [
   "settings_get",
   "session_get_state",
@@ -112,12 +112,17 @@ commands.allow = [
   "session_clear_subtitles",
   "session_switch_source_language",
   "session_switch_audio_input",
+  "session_switch_system_audio_target",
+  "audio_applications",
+  "capture_status",
   "settings_save",
   "profile_save_credentials",
   "profile_test_connection",
   "profile_reveal_credential",
   "app_show_settings",
   "app_quit",
+  "file_transcribe",
+  "file_transcribe_supported_extensions",
 ]
 
 [[permission]]

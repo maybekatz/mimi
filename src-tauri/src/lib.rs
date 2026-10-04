@@ -30,6 +30,7 @@ mod session_export;
 mod session_history;
 mod session_manager;
 mod settings_store;
+mod file_transcribe;
 mod windows;
 #[cfg(target_os = "windows")]
 mod windows_startup;
@@ -437,6 +438,8 @@ pub fn run() {
             commands::tray_panel_hide,
             commands::app_show_settings,
             commands::app_quit,
+            file_transcribe::file_transcribe,
+            file_transcribe::file_transcribe_supported_extensions,
         ])
         .build(context)
         .expect("error while building tauri application")

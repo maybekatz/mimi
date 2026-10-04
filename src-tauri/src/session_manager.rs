@@ -2965,6 +2965,23 @@ impl SessionManager {
         Ok(())
     }
 
+    /// Voice: inject a file transcript as a confirmed history entry so
+    /// copy/edit/export work identically to live capture. No provider round-trip.
+    pub async fn inject_file_transcript(self: &Arc<Self>, text: String) -> Result<(), String> {
+        let trimmed = text.trim().to_string();
+        if trimmed.is_empty() {
+            return Err("empty transcript".into());
+        }
+        let _content = self.subtitle_content_lock.lock().await;
+        let created_at_ms = time::OffsetDateTime::now_utc().unix_timestamp() as u64 * 1000;
+        {
+            let mut ctrl = self.controller.lock().unwrap();
+            ctrl.inject_file_text(trimmed, created_at_ms);
+        }
+        self.publish_state();
+        Ok(())
+    }
+
     fn clear_current_subtitle_history(&self) -> std::io::Result<()> {
         let pending = self.history_pending_id.lock().unwrap();
         if let Some(id) = pending.as_deref() {

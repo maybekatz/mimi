@@ -491,6 +491,35 @@ impl TranslationSessionController {
         self.refresh();
     }
 
+    /// Voice: inject a confirmed file transcript into the aggregate history
+    /// and archive. Used by the file-import IPC so copy/export are unified.
+    pub fn inject_file_text(&mut self, text: String, created_at_ms: u64) {
+        use mimi_core::models::{SubtitleLine, SubtitlePair};
+        let trimmed = text.trim().to_string();
+        if trimmed.is_empty() || !mimi_core::models::subtitle_text_within_limit(&trimmed) {
+            return;
+        }
+        let mut item = SubtitlePair::new(trimmed.clone(), String::new(), created_at_ms);
+        // Keep the aggregate history bounded (same cap as live path).
+        self.state.subtitles.history.push(item.clone());
+        if self.state.subtitles.history.len() > 20 {
+            self.state.subtitles.history.remove(0);
+        }
+        // Also push to the active lane for per-source consistency.
+        if let Some(active) = self.audio_input.sources().first().copied() {
+            item.audio_source = active;
+            let lane = &mut self.sources[source_index(active)];
+            lane.state.subtitles.history.push(SubtitlePair::new(item.source.clone(), String::new(), created_at_ms));
+            // Clamp lane history as well.
+            if lane.state.subtitles.history.len() > 20 {
+                lane.state.subtitles.history.remove(0);
+            }
+            lane.state.subtitles.source = SubtitleLine::new(item.source.clone(), true);
+        }
+        self.archive.append(&item);
+        self.refresh();
+    }
+
     #[cfg(test)]
     pub fn handle(&mut self, event: LiveTranslateServerEvent) {
         self.handle_from(self.audio_input.sources()[0], event);

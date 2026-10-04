@@ -337,3 +337,15 @@ export type ConnectionCheckStage = "speech" | "text";
 export function testProfileConnection(profileId: string, stage?: ConnectionCheckStage): Promise<ConnectionDiagnostic> {
   return invoke("profile_test_connection", stage ? { profileId, stage } : { profileId });
 }
+
+export interface FileTranscribeResult {
+  text: string;
+  language: string | null;
+  durationMs: number | null;
+}
+export function fileTranscribe(path: string): Promise<FileTranscribeResult> {
+  return invoke("file_transcribe", { path });
+}
+export function fileTranscribeSupportedExtensions(): Promise<string[]> {
+  return invoke("file_transcribe_supported_extensions");
+}
