@@ -54,6 +54,7 @@ rubato = "5"
 # Local SpeexDSP linear echo cancellation; wrapped with checked frame sizes.
 aec-rs-sys = "=1.0.0"
 tauri-plugin-dialog = "2"
+tauri-plugin-fs = "2"
 time = "0.3"
 tempfile = "3"
 tauri-plugin-clipboard-manager = "2"

@@ -1,5 +1,31 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
   "productName": "mimi dev",
-  "identifier": "app.yuxino.mimi.dev"
+  "identifier": "app.yuxino.mimi.dev",
+  "app": {
+    "windows": [
+      {
+        "label": "transcribe",
+        "title": "mimi voice — 语音转文字",
+        "width": 780,
+        "height": 640,
+        "resizable": true,
+        "center": true,
+        "visible": true,
+        "minWidth": 560,
+        "minHeight": 480
+      },
+      {
+        "label": "settings",
+        "title": "设置 — mimi voice",
+        "width": 760,
+        "height": 720,
+        "resizable": true,
+        "center": true,
+        "visible": false,
+        "minWidth": 520,
+        "minHeight": 560
+      }
+    ]
+  }
 }

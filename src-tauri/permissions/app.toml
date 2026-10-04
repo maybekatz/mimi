@@ -101,6 +101,26 @@ commands.allow = [
 ]
 
 [[permission]]
+identifier = "app-transcribe"
+description = "Voice V1 single-window transcription: start/stop microphone, live text, copy and export."
+commands.allow = [
+  "settings_get",
+  "session_get_state",
+  "session_start",
+  "session_stop",
+  "session_toggle_paused",
+  "session_clear_subtitles",
+  "session_switch_source_language",
+  "session_switch_audio_input",
+  "settings_save",
+  "profile_save_credentials",
+  "profile_test_connection",
+  "profile_reveal_credential",
+  "app_show_settings",
+  "app_quit",
+]
+
+[[permission]]
 identifier = "app-tray-panel"
 description = "Allows the tray panel to operate sessions, presentation preferences, and app actions."
 commands.allow = [
